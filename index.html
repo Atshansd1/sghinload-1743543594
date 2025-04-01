@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SghinLoad Device Management</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #0f0f0f;
+            color: white;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .header {
+            background-color: #1c1c1e;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+        }
+        .card {
+            background-color: #1c1c1e;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        .code-display {
+            font-family: monospace;
+            font-size: 24px;
+            text-align: center;
+            padding: 10px;
+            background-color: #2c2c2e;
+            border-radius: 6px;
+            margin: 10px 0;
+            letter-spacing: 2px;
+        }
+        .button {
+            background-color: #0a84ff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .button:hover {
+            background-color: #007aff;
+        }
+        .device-list {
+            margin-top: 20px;
+        }
+        .device-item {
+            background-color: #2c2c2e;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .device-name {
+            font-weight: 600;
+        }
+        .device-info {
+            color: #999;
+            font-size: 14px;
+        }
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #30d158;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1c1c1e;
+            color: #888;
+            font-size: 14px;
+        }
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #2c2c2e;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background-color: #3a3a3c;
+        }
+        .tab-content {
+            display: none;
+            background-color: #2c2c2e;
+            padding: 20px;
+            border-radius: 0 8px 8px 8px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>SghinLoad Device Management</h1>
+        <p>Your Apple TV device code: <span class="code-display"></span></p>
+    </div>
+    
+    <div class="container">
+        <div class="card">
+            <h2>Device Installation</h2>
+            <p>Install the profile on your Apple TV to enable remote management:</p>
+            <ol>
+                <li>Open Settings on your Apple TV</li>
+                <li>Go to General > Privacy > Share Apple TV Analytics</li>
+                <li>Press Play/Pause button on remote</li>
+                <li>Select "Add Profile" and enter the URL below</li>
+            </ol>
+            <div class="code-display">https://Atshansd1.github.io/sghinload-1743543594/profile.mobileconfig</div>
+            <a href="profile.mobileconfig" class="button">Download Profile</a>
+        </div>
+        
+        <div class="tab-container">
+            <div class="tab active" onclick="openTab(event, 'devices')">Linked Devices</div>
+            <div class="tab" onclick="openTab(event, 'apps')">App Installation</div>
+            <div class="tab" onclick="openTab(event, 'settings')">Settings</div>
+        </div>
+        
+        <div id="devices" class="tab-content active">
+            <h2>Your Linked Devices</h2>
+            <p>Devices using code <b></b> will appear here after installation.</p>
+            
+            <div class="device-list">
+                <div class="device-item">
+                    <div>
+                        <div class="device-name"><span class="status-dot"></span> Apple TV</div>
+                        <div class="device-info">Last seen: Waiting for connection</div>
+                    </div>
+                    <a href="#" class="button" style="padding: 8px 12px; font-size: 14px;">Remove</a>
+                </div>
+            </div>
+        </div>
+        
+        <div id="apps" class="tab-content">
+            <h2>App Installation</h2>
+            <p>Select an app to install on your linked devices:</p>
+            <p style="color: #999;">Waiting for device connection...</p>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <p>Devices must be connected to install apps</p>
+                <a href="sghinload://open/devicemanager" class="button">Open SghinLoad App</a>
+            </div>
+        </div>
+        
+        <div id="settings" class="tab-content">
+            <h2>Management Settings</h2>
+            <p>Configure your management preferences:</p>
+            
+            <div style="margin-top: 20px;">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Profile Name</label>
+                    <input type="text" value="SghinLoad Profile" style="width: 100%; padding: 8px; border-radius: 6px; border: none; background-color: #3a3a3c; color: white;">
+                </div>
+                
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px;">Auto-Install Apps</label>
+                    <select style="width: 100%; padding: 8px; border-radius: 6px; border: none; background-color: #3a3a3c; color: white;">
+                        <option>Prompt Before Installing</option>
+                        <option>Install Automatically</option>
+                        <option>Manual Installation Only</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label style="display: block; margin-bottom: 5px;">
+                        <input type="checkbox" checked> Send Notifications
+                    </label>
+                </div>
+                
+                <div style="margin-top: 20px;">
+                    <a href="#" class="button">Save Settings</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="footer">
+        &copy; 2023 SghinLoad - Device Code: 
+    </div>
+    
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].className = tabcontent[i].className.replace(" active", "");
+            }
+            
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            
+            document.getElementById(tabName).className += " active";
+            evt.currentTarget.className += " active";
+        }
+        
+        // Check for device connection
+        function checkDeviceConnection() {
+            // In a real implementation, this would be an AJAX call to your backend
+            console.log("Checking for device connection...");
+            
+            // For demo purposes, you could simulate a connection event
+            // In a production environment, this would be handled by a backend service
+        }
+        
+        // Poll for device connection every 5 seconds
+        setInterval(checkDeviceConnection, 5000);
+        
+        // Register a custom URL handler for the sghinload:// scheme
+        document.addEventListener('click', function(event) {
+            var link = event.target.closest('a');
+            if (link && link.href.startsWith('sghinload://')) {
+                event.preventDefault();
+                console.log('Custom URL scheme clicked:', link.href);
+                
+                // In a real implementation, this would either:
+                // 1. Launch the app if it's installed
+                // 2. Show instructions if the app isn't installed
+                alert('Opening SghinLoad App...');
+            }
+        });
+    </script>
+</body>
+</html>
